@@ -1,5 +1,5 @@
 var hapi = require('hapi'),
-	controller = new ('./alexa/controller'),
+	controller = ('./alexa/controller'),
 	Boom = require('boom'),
 	server = new hapi.Server();
 
