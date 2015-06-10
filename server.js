@@ -20,7 +20,7 @@ server.connection({ port: 8080 });
 server.route([
 {
 	method: 'POST',
-	path: '/',
+	path: '/alexa',
 	config: {
 		handler: function(request, result){
 			var alexa = request.body;
