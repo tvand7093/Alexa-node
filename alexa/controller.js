@@ -76,17 +76,14 @@ module.exports = {
 	launch: function(data) {
 		console.log("Launching application from alexa!");
 		helper.log(data);
-		return generateResponse("Hello world!", "Failed", false);
+		return generateResponse("Hello world!", null, false);
 	},
 	intent: function(data) {
 		console.log("Intent from alexa!");
 		console.log("Intent: " + data.intent.name);
 		console.log("Slots!!!!");
-		helper.log(data.slots);
 		
-		console.log(data.slots);
-		
-		return generateResponse("Hello Tyler. I know you love kelly!", "I'm not sure what you are asking.", true);
+		return generateResponse("Hello Tyler. I know you love kelly!", null, false);
 	},
 	end: function(data) {
 		console.log("Session ended from alexa!");
