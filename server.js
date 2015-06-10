@@ -29,7 +29,7 @@ server.route([
 				try {
 					var alexa = request.payload;
 					
-					if (alexa.application.applicationId != alexaConfig.applicationId) {
+					if (alexa.session.application.applicationId != alexaConfig.applicationId) {
 						return Boom("The application id specified is incorrect for this application.", alexa);
 					}
 
@@ -48,7 +48,7 @@ server.route([
 					
 					result = Boom.badRequest(e, {
 						route: "/alexa",
-						body: request.payload
+						payload: request.payload
 					});
 					console.log(util.inspect(result, {showHidden: false, depth: null})); 
 				}
