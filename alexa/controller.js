@@ -70,19 +70,12 @@ function generateResponse(text, reprompt, endSession){
 
 module.exports = {
 	launch: function(data) {
-		console.log("Launching application from alexa!");
-		helper.log(data);
 		return generateResponse("Hello world!", null, true);
 	},
 	intent: function(data) {
-		console.log("Intent from alexa!");
-		console.log("Intent: " + data.intent.name);
-		console.log("Slots!!!!");
-		
 		return generateResponse("Hello Tyler. I know you love kelly!", null, true);
 	},
 	end: function(data) {
-		console.log("Session ended from alexa!");
 		return generateResponse(null, null, true);
 	}
 };

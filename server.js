@@ -36,17 +36,23 @@ server.route([
 
 					var data = alexa.request;
 
-					if (alexa.request.type == alexaResponses.end)
+					if (alexa.request.type == alexaResponses.end){
+						console.log("END");
 						result = controller.end(data);
-					else if (alexa.request.type == alexaResponses.intent)
+					}
+					else if (alexa.request.type == alexaResponses.intent){
+						console.log("INTENT");
 						result = controller.intent(data);
-					else if (alexa.request.type == alexaResponses.launch)
+					}
+					
+					else if (alexa.request.type == alexaResponses.launch){
+						console.log("LAUNCH");
 						result = controller.launch(data);
+					}
 					else
 						result = Boom("Unknown request type recieved.");
 				}
 				catch (e) {
-					
 					result = Boom.badRequest(e, {
 						route: "/alexa",
 						payload: request.payload
