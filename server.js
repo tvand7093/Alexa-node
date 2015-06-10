@@ -2,6 +2,7 @@
 var hapi = require('hapi'),
 	controller = ('./alexa/controller'),
 	Boom = require('boom'),
+	util = require('util'),
 	server = new hapi.Server();
 
 var alexaConfig = {
@@ -42,7 +43,6 @@ server.route([
 						result = controller.launch(data);
 					else
 						result = Boom("Unknown request type recieved.");
-
 				}
 				catch (e) {
 					
@@ -50,7 +50,7 @@ server.route([
 						route: "/alexa",
 						body: request.payload
 					});
-					console.log(result); 
+					console.log(util.inspect(result, {showHidden: false, depth: null})); 
 				}
 				
 				reply(result);
