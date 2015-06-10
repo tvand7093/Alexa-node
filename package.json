@@ -1,0 +1,11 @@
+{
+  "name": "Alexa-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jasmine-node spec --capture-exceptions"
+  },
+  "author": "",
+  "license": "ISC"
+}
