@@ -1,6 +1,6 @@
 /// <reference path="typings/node/node.d.ts"/>
 var hapi = require('hapi'),
-	controller = ('./alexa/controller'),
+	controller = require('./alexa/controller'),
 	Boom = require('boom'),
 	util = require('util'),
 	server = new hapi.Server();
