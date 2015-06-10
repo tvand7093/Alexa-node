@@ -45,11 +45,14 @@ server.route([
 
 				}
 				catch (e) {
+					
 					result = Boom.badRequest(e, {
 						route: "/alexa",
 						body: request.body
 					});
+					console.log(result);
 				}
+				
 				reply(result);
 			}
 		}
