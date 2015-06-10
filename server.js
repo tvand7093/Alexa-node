@@ -50,7 +50,7 @@ server.route([
 						route: "/alexa",
 						body: request.body
 					});
-					console.log(result);
+					console.log(result); 
 				}
 				
 				reply(result);
