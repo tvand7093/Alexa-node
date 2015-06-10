@@ -1,11 +1,12 @@
 {
   "name": "Alexa-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "An Amazon Echo based web service",
   "main": "server.js",
+  "repository": "ssh://git@github.com/tvand7093/Alexa-node.git",
   "scripts": {
     "test": "jasmine-node spec --capture-exceptions"
   },
-  "author": "",
+  "author": "Tyler Vanderhoef",
   "license": "ISC"
 }
