@@ -1,6 +1,7 @@
 /// <reference path="typings/node/node.d.ts"/>
 var hapi = require('hapi'),
 	controller = require('./alexa/controller'),
+	helper = require('./alexa/helper'),
 	Boom = require('boom'),
 	util = require('util'),
 	server = new hapi.Server();
@@ -50,7 +51,7 @@ server.route([
 						route: "/alexa",
 						payload: request.payload
 					});
-					console.log(util.inspect(result, {showHidden: false, depth: null})); 
+					helper.log(util.inspect(result, {showHidden: false, depth: null})); 
 				}
 				
 				reply(result);

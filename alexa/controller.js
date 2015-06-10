@@ -23,6 +23,7 @@
 //    "shouldEndSession": true
 //  }
 //}
+var helper = require('./helper');
 
 var speech = {
 	outputSpeech: {
@@ -66,7 +67,7 @@ function generateResponse(text, reprompt, endSession){
 	responseBase = defaultBase;
 	
 	console.log("REPLYING");
-	console.log(response);
+	helper.log(response);
 	
 	return response;
 }
@@ -74,12 +75,15 @@ function generateResponse(text, reprompt, endSession){
 module.exports = {
 	launch: function(data) {
 		console.log("Launching application from alexa!");
+		helper.log(data);
 		return generateResponse("Hello world!", "Failed", false);
 	},
 	intent: function(data) {
 		console.log("Intent from alexa!");
 		console.log("Intent: " + data.intent.name);
 		console.log("Slots!!!!");
+		helper.log(data.slots);
+		
 		console.log(data.slots);
 		
 		return generateResponse("Hello Tyler. I know you love kelly!", "I'm not sure what you are asking.", true);
