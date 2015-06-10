@@ -59,11 +59,7 @@ function generateResponse(text, reprompt, endSession){
 		response.response.reprompt = speech;
 		response.response.reprompt.outputSpeech.text = reprompt;
 	}
-
-	response.response.speech = speech;
-	response.response.reprompt = speech;
-	response.response.speech.outputSpeech.text = text;
-	response.response.reprompt.outputSpeech.text = reprompt;
+	
 	responseBase = defaultBase;
 	
 	console.log("REPLYING");
