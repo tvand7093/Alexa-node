@@ -61,7 +61,7 @@ function generateResponse(text, reprompt, endSession){
 	}
 	
 	responseBase = defaultBase;
-	
+	helper.log(response);
 	return response;
 }
 
