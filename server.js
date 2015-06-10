@@ -48,7 +48,7 @@ server.route([
 					
 					result = Boom.badRequest(e, {
 						route: "/alexa",
-						body: request.body
+						body: request.payload
 					});
 					console.log(result); 
 				}
