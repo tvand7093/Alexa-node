@@ -26,7 +26,7 @@ server.route([
 			handler: function (request, reply) {
 				var result = null;
 				try {
-					var alexa = request.body;
+					var alexa = request.payload;
 					
 					if (alexa.application.applicationId != alexaConfig.applicationId) {
 						return Boom("The application id specified is incorrect for this application.", alexa);
