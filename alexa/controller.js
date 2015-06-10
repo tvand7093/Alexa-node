@@ -48,7 +48,7 @@ var defaultBase = {
 function generateResponse(text, reprompt, endSession){
 	var response = responseBase;
 	
-	response.shouldEndSession = endSession;
+	response.response.shouldEndSession = endSession;
 	
 	if(text){
 		response.response.speech = speech;
@@ -61,9 +61,6 @@ function generateResponse(text, reprompt, endSession){
 	}
 	
 	responseBase = defaultBase;
-	
-	console.log("REPLYING");
-	helper.log(response);
 	
 	return response;
 }
