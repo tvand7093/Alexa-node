@@ -27,6 +27,7 @@ alexa.launch(function (req, alexa, request, reply) {
 	alexa.say("What would you like to know?");
 	alexa.say("You may ask questions like: how many episodes are in a series?");
 	alexa.shouldEndSession(false);
+	reply(alexa.body);
 });
 
 alexa.intent('Open', function (req, alexa, request, reply) {
