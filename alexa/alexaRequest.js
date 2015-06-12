@@ -15,6 +15,7 @@ module.exports = function(json) {
 	};
 	this.sessionDetails = {
 		new: this.data.session.new,
+		applicationId: this.data.session.application.applicationId,
 		sessionId: this.data.session.sessionId,
 		userId: this.data.session.userId,
 		attributes: this.data.session.attributes
