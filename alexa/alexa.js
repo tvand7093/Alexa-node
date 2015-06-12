@@ -41,7 +41,7 @@ alexa.App = function (name, applicationId, endpoint) {
 				//validate that this is the correct application
 				if (request.sessionDetails.applicationId != self.applicationId) {
 					response.say("The application id specified is incorrect for this application.");
-					reject(response.body);
+					reject(response);
 					return;
 				}
 
@@ -82,20 +82,24 @@ alexa.App = function (name, applicationId, endpoint) {
 				}
 				else {
 					response.say("Error: not a valid request.");
-					reject(response.body);
+					reject(response);
 				}
 			} catch (e) {
 				console.log(e);
 				response.say("Sorry, the application encountered an error.");
-				reject(response.body);
+				reject(response);
 			}
-			fulfill(response.body);
+			fulfill(response);
 		});
 	};
 
 	this.requestHandler = function (req, reply) {
 		this.process(req, reply)
-			.done(reply);
+			.then(function(result){
+				return result.body;	
+			}, function(err){
+				return err.body;
+			}).done(reply);
 	};
 	this.test = function (req, res) {
 		res.render('test', { "json": self });
