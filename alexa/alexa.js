@@ -43,6 +43,10 @@ alexa.App = function(name, applicationId, endpoint) {
 				return;
 			}
 			
+			console.log("Valid.");
+			console.log(request);
+			console.log(response);
+			
 			// Copy all the session attributes from the request into the response so they persist.
 			// This should happen by default, but it seems to be a bug in the Alexa API (?)
 			if (request.sessionAttributes) {
