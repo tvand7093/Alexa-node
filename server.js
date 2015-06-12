@@ -29,6 +29,7 @@ alexa.launch(function(request,reply) {
 
 alexa.intent('Open',function(request,reply) {
   var recipe = request.slot('Recipe');
+  helper.log(request);
   reply.say("I will open up the recipe " + recipe + " for you.");
   reply.shouldEndSession(true);
 });
