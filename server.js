@@ -25,6 +25,7 @@ var alexa = new alexaApp.App('CookBook', alexaConfig.applicationId);
 
 alexa.launch(function (request, reply) {
 	reply.say("What would you like to know?");
+	reply.say("You may ask me questions like: how many episodes are in a series?");
 	reply.shouldEndSession(false);
 });
 
@@ -33,10 +34,12 @@ alexa.intent('Open', function (request, reply) {
 	console.log("Searching...");
 	imdb.searchForShow(showName)
 		.then(function(result){
+			console.log(result);
 			//found the one show we wanted!
 			if(!result.length){
 				imdb.getEpisodeCount(result.id)
 					.then(function(result){
+						console.log(result);
 						reply.say("The show " + showName + " has approximatly " + result + " episodes.");
 						reply.shouldEndSession(true);
 					});
