@@ -61,7 +61,7 @@ alexa.Request = function(json) {
 
 alexa.apps = {};
 
-alexa.App = function(name,endpoint) {
+alexa.App = function(name, applicationId, endpoint) {
 	var self = this;
 	this.endpoint = endpoint;
 	this.intents = {};
@@ -87,8 +87,16 @@ alexa.App = function(name,endpoint) {
 		try {
 			var key;
 			var response = new alexa.Response();
-			console.log(req.payload);
+
 			var request = new alexa.Request(req.payload);
+			
+			//validate that this is the correct application
+			if (request.payload.session.application.applicationId != applicationId) {
+				response.say("The application id specified is incorrect for this application.");
+				reply(response.response);
+				return;
+			}
+			
 			// Copy all the session attributes from the request into the response so they persist.
 			// This should happen by default, but it seems to be a bug in the Alexa API (?)
 			if (request.sessionAttributes) {
@@ -135,14 +143,5 @@ alexa.App = function(name,endpoint) {
 	};
 	alexa.apps[name] = this;
 }
-// A utility method to bootstrap alexa endpoints into express automatically
-alexa.bootstrap = function(express,path) {
-	var appName, app;
-	for (appName in alexa.apps) {
-		app = alexa.apps[appName];
-		var endpoint = (path || '/') + (app.endpoint || appName);
-		express.post(endpoint,app.request);
-		express.get(endpoint,app.test);
-	}
-};
+
 module.exports = alexa;

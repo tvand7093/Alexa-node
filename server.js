@@ -5,8 +5,7 @@ var hapi = require('hapi'),
 	Boom = require('boom'),
 	util = require('util'),
 	server = new hapi.Server(),
-	alexaApp = require('./alexa/alexa'),
-	alexa = new alexaApp.App('CookBook');
+	alexaApp = require('./alexa/alexa');
 
 var alexaConfig = {
 	applicationId: 'amzn1.echo-sdk-ams.app.ffa2f852-7629-49a6-8c89-c7295a1f4e7e'
@@ -21,19 +20,21 @@ var alexaResponses = {
 //create the server connection on the configuration port.
 server.connection({ port: process.env.port || 8080 });
 
-alexa.launch(function(request,response) {
-  response.say("Hello World");
-  response.card("Hello World","This is an example card");
+
+var alexa = new alexaApp.App('CookBook', alexaConfig.applicationId);
+
+
+alexa.launch(function(request,reply) {
+  reply.say("Hello Kelly, you are my best friend!");
 });
 
-alexa.intent('number',function(request,response) {
+alexa.intent('number',function(request,reply) {
   var number = request.slot('number');
-  response.say("You asked for the number "+number);
+  reply.say("You asked for the number "+number);
 });
 
-alexa.sessionEnded(function(request,response) {
-    //logout( request.userId );
-    // No response necessary
+alexa.sessionEnded(function(request,reply) {
+
 });
 
 //register all routes
@@ -44,33 +45,11 @@ server.route([
 		config: {
 			handler: function (request, reply) {
 				
-				var result = null;
 				try {
-					
-					if (request.payload.session.application.applicationId != alexaConfig.applicationId) {
-						return Boom("The application id specified is incorrect for this application.", alexa);
-					}
-					
 					alexa.request(request, reply);
-
-//					if (alexa.request.type == alexaResponses.end){
-//						console.log("END");
-//						result = controller.end(data);
-//					}
-//					else if (alexa.request.type == alexaResponses.intent){
-//						console.log("INTENT");
-//						result = controller.intent(data);
-//					}
-//					
-//					else if (alexa.request.type == alexaResponses.launch){
-//						console.log("LAUNCH");
-//						result = controller.launch(data);
-//					}
-//					else
-//						result = Boom("Unknown request type recieved.");
 				}
 				catch (e) {
-					result = Boom.badRequest(e, {
+					var result = Boom.badRequest(e, {
 						route: "/alexa",
 						payload: request.payload
 					});
