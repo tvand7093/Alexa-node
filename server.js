@@ -44,7 +44,8 @@ alexa.intent('Open', function (request, reply) {
 						console.log(result);
 						reply.say("The show " + showName + " has around " + result + " episodes.");
 						reply.shouldEndSession(true);
-					});
+					})
+					.done();
 			}
 			else{
 				//multiple shows, have them pick.
@@ -56,8 +57,7 @@ alexa.intent('Open', function (request, reply) {
 		.catch(function(err){
 			reply.say("I could not find that for you.");
 			reply.shouldEndSession(true);
-		})
-		.done();
+		});
 });
 
 alexa.sessionEnded(function (request, reply) {
