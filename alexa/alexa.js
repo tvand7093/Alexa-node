@@ -94,7 +94,8 @@ alexa.App = function (name, applicationId, endpoint) {
 	};
 
 	this.requestHandler = function (req, reply) {
-		this.process(reply, reply).done();
+		this.process(req, reply)
+			.done(reply);
 	};
 	this.test = function (req, res) {
 		res.render('test', { "json": self });
