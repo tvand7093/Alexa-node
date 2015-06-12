@@ -1,3 +1,5 @@
+var Promise = require('promise');
+
 module.exports = function() {
 	var resolve, reject;
 	var prom = new Promise(function (_resolve, _reject) {
@@ -37,9 +39,14 @@ module.exports = function() {
 	this.session = function(key,val) {
 		this.body.sessionAttributes[key] = val;
 	};
-	this.cancel = function (reason) {
-		reject(reason);
+	this.cancel = function (data) {
+		reject(data);
+		return prom;
 	};
+	this.done = function(data) {
+		resolve(data);
+		return prom;
+	}
 	this.promise = function () {
 		return prom;
 	};

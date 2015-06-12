@@ -30,76 +30,72 @@ alexa.App = function (name, applicationId, endpoint) {
 	};
 	this.applicationId = applicationId;
 
-	this.process = function (req, reply) {
-		return new Promise(function(fulfill, reject) {
-			var key;
-			var response = new AlexaReply();
+	this.requestHandler = function (req, reply) {
 
-			try {
-				var request = new AlexaRequest(req.payload);
+		var key;
+		var response = new AlexaReply();
+		var errored = false;
+		
+		try {
+			var request = new AlexaRequest(req.payload);
 
-				//validate that this is the correct application
-				if (request.sessionDetails.applicationId != self.applicationId) {
-					response.say("The application id specified is incorrect for this application.");
-					reject(response);
-					return;
-				}
+			//validate that this is the correct application
+			if (request.sessionDetails.applicationId != self.applicationId) {
+				response.say("The application id specified is incorrect for this application.");
+				reply(response);
+				return;
+			}
 
-				// Copy all the session attributes from the request into the response so they persist.
-				// This should happen by default, but it seems to be a bug in the Alexa API (?)
-				if (request.sessionAttributes) {
-					for (key in request.sessionAttributes) {
-						response.session(key, request.sessionAttributes[key]);
-					}
+			// Copy all the session attributes from the request into the response so they persist.
+			// This should happen by default, but it seems to be a bug in the Alexa API (?)
+			if (request.sessionAttributes) {
+				for (key in request.sessionAttributes) {
+					response.session(key, request.sessionAttributes[key]);
 				}
-				var requestType = request.type();
-				if ("IntentRequest" === requestType) {
-					try {
-						var func = self.intents[req.payload.request.intent.name]['function'];
-						if (typeof func == "function") {
-							var intent = func(request, response, req, reply);
-							if (intent != undefined && typeof intent.done == 'function') intent.done();
-						}
-						else {
-							response.say("Sorry, the application didn't know what to do with that intent");
-						}
-					} catch (e) { }
-				}
-				else if ("LaunchRequest" === requestType) {
-					if (typeof self.launchFunc == "function") {
-						var launch = self.launchFunc(request, response, req, reply);
-						if (launch != undefined && typeof launch.done == 'function') launch.done();
+			}
+			var requestType = request.type();
+			if ("IntentRequest" === requestType) {
+				try {
+					var func = self.intents[req.payload.request.intent.name]['function'];
+					if (typeof func == "function") {
+						var intent = func(request, response, req, reply);
+						if (intent != undefined && typeof intent.done == 'function') intent.done();
 					}
 					else {
-						response.say("Try telling the application what to do instead of opening it");
+						response.say("Sorry, the application didn't know what to do with that intent");
+						errored = true;
 					}
-				}
-				else if ("SessionEndedRequest" === requestType) {
-					if (typeof self.sessionEndedFunc == "function") {
-						var end = self.sessionEndedFunc(request, response, req, reply);
-						if (end != undefined && typeof end.done == 'function') end.done();
-					}
+				} catch (e) { errored = true; }
+			}
+			else if ("LaunchRequest" === requestType) {
+				if (typeof self.launchFunc == "function") {
+					var launch = self.launchFunc(request, response, req, reply);
+					if (launch != undefined && typeof launch.done == 'function') launch.done();
 				}
 				else {
-					response.say("Error: not a valid request.");
-					reject(response);
+					response.say("Try telling the application what to do instead of opening it");
+					errored = true;
 				}
-			} catch (e) {
-				console.log(e);
-				response.say("Sorry, the application encountered an error.");
-				reject(response);
 			}
-			fulfill(response);
-		});
-	};
-
-	this.requestHandler = function (req, reply) {
-		this.process(req, reply)
-			.then(function(result){
-				return result.body;	
-			}, function(err){
-				return err.body;
-			}).done(reply);
+			else if ("SessionEndedRequest" === requestType) {
+				if (typeof self.sessionEndedFunc == "function") {
+					var end = self.sessionEndedFunc(request, response, req, reply);
+					if (end != undefined && typeof end.done == 'function') end.done();
+				}
+			}
+			else {
+				response.say("Error: not a valid request.");
+				errored = true;
+			}
+		} 
+		catch (e) {
+			console.log(e);
+			response.say("Sorry, the application encountered an error.");
+			errored = true;
+		}
+		if(errored){
+			reply(response.body);
+		}
 	};
 	this.test = function (req, res) {
 		res.render('test', { "json": self });

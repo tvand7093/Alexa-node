@@ -23,14 +23,14 @@ server.connection({ port: process.env.port || 8080 });
 
 var alexa = new alexaApp.App('MyShows', alexaConfig.applicationId);
 
-alexa.launch(function (request, reply) {
-	reply.say("What would you like to know?");
-	reply.say("You may ask me questions like: how many episodes are in a series?");
-	reply.shouldEndSession(false);
+alexa.launch(function (req, alexa, request, reply) {
+	alexa.say("What would you like to know?");
+	alexa.say("You may ask questions like: how many episodes are in a series?");
+	alexa.shouldEndSession(false);
 });
 
-alexa.intent('Open', function (request, reply) {
-	var showName = request.slot('ShowName');
+alexa.intent('Open', function (req, alexa, request, reply) {
+	var showName = req.slot('ShowName');
 	console.log("Searching...");
 	return imdb.searchForShow(showName)
 		.then(function(result){
@@ -42,26 +42,27 @@ alexa.intent('Open', function (request, reply) {
 				imdb.getEpisodeCount(result.id)
 					.then(function(result){
 						console.log(result);
-						reply.say("The show " + showName + " has around " + result + " episodes.");
-						reply.shouldEndSession(true);
+						alexa.say("The show " + showName + " has around " + result + " episodes.");
+						alexa.shouldEndSession(true);
+						return alexa.body;
 					})
-					.done();
+					.done(reply);
 			}
 			else{
 				//multiple shows, have them pick.
 				var names = result.join(', ');
 				console.log(names);
-				reply.say("I found a few shows with that name, pick one of the following: " + names + '?');
+				alexa.say("I found a few shows with that name, pick one of the following: " + names + '?');
 			}
 		})
 		.catch(function(err){
-			reply.say("I could not find that for you.");
-			reply.shouldEndSession(true);
+			alexa.say("I could not find that for you.");
+			alexa.shouldEndSession(true);
 		});
 });
 
-alexa.sessionEnded(function (request, reply) {
-
+alexa.sessionEnded(function (req, alexa, request, reply) {
+	reply(alexa.body);
 });
 
 //register all routes
