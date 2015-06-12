@@ -56,7 +56,8 @@ alexa.intent('Open', function (request, reply) {
 		.catch(function(err){
 			reply.say("I could not find that for you.");
 			reply.shouldEndSession(true);
-		});
+		})
+		.done();
 });
 
 alexa.sessionEnded(function (request, reply) {

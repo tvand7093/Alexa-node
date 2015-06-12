@@ -55,7 +55,7 @@ alexa.App = function(name, applicationId, endpoint) {
 				try {
 					var func = self.intents[req.payload.request.intent.name]['function'];
 					if (typeof func=="function") {
-						var intent = func(request,response,req,reply);
+						func(request,response,req,reply);
 						//if(intent != undefined && typeof intent.done == 'function') intent.done();
 					}
 					else {
@@ -65,7 +65,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			}
 			else if ("LaunchRequest"===requestType) {
 				if (typeof self.launchFunc=="function") {
-					var launch = self.launchFunc(request,response,req,reply);
+					self.launchFunc(request,response,req,reply);
 					//if(launch != undefined && typeof launch.done == 'function') launch.done();
 				}
 				else {
@@ -74,7 +74,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			}
 			else if ("SessionEndedRequest"===requestType) {
 				if (typeof self.sessionEndedFunc=="function") {
-					var end = self.sessionEndedFunc(request,response,req,reply);
+					self.sessionEndedFunc(request,response,req,reply);
 					//if(end != undefined && typeof end.done == 'function') end.done();
 				}
 			}
@@ -88,8 +88,10 @@ alexa.App = function(name, applicationId, endpoint) {
 		}
 		
 		response.done().then(function () {
+			console.log(response.body);
 			reply( response.body );
 		}).catch(function (err) {
+			console.log(err);
 			response.say(err);
 			reply( response.body );
 		});
