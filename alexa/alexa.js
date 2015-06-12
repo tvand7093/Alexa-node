@@ -34,7 +34,11 @@ alexa.App = function(name, applicationId, endpoint) {
 			var key;
 			
 			var response = new AlexaReply();
+			console.log(response);
+
+
 			var request = new AlexaRequest(req.payload);
+			console.log(request);
 
 			//validate that this is the correct application
 			if (request.payload.session.application.applicationId != self.applicationId) {
@@ -44,8 +48,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			}
 			
 			console.log("Valid.");
-			console.log(request);
-			console.log(response);
+			
 			
 			// Copy all the session attributes from the request into the response so they persist.
 			// This should happen by default, but it seems to be a bug in the Alexa API (?)
