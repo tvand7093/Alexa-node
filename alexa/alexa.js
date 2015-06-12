@@ -87,18 +87,17 @@ alexa.App = function(name, applicationId, endpoint) {
 			response.cancel("Sorry, the application encountered an error.");
 		}
 		
-		console.log("END");
-		
-		response.done().then(function () {
+		response.then(function () {
 			console.log("DONE");
 			console.log(response.body);
-			reply( response.body );
+			return response.body;
 		}).catch(function (err) {
 			console.log("ERROR DONE");
 			console.log(err);
 			response.say(err);
-			reply( response.body );
-		});
+			return response.body;
+		})
+		.done(reply);
 	};
 	this.test = function(req,res) {
 		res.render('test',{"json":self});
