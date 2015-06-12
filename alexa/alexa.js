@@ -88,9 +88,11 @@ alexa.App = function(name, applicationId, endpoint) {
 		}
 		
 		response.done().then(function () {
+			console.log("DONE");
 			console.log(response.body);
 			reply( response.body );
 		}).catch(function (err) {
+			console.log("ERROR DONE");
 			console.log(err);
 			response.say(err);
 			reply( response.body );

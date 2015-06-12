@@ -24,9 +24,11 @@ server.connection({ port: process.env.port || 8080 });
 var alexa = new alexaApp.App('MyShows', alexaConfig.applicationId);
 
 alexa.launch(function (request, reply) {
+	console.log("START LAUNCH");
 	reply.say("What would you like to know?");
 	reply.say("You may ask me questions like: how many episodes are in a series?");
 	reply.shouldEndSession(false);
+	console.log("END LAUNCH");
 });
 
 alexa.intent('Open', function (request, reply) {

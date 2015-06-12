@@ -1,5 +1,3 @@
-var Promise = require('promise');
-
 module.exports = function() {
 	var isWaiting = false;
 	var resolve, reject;
