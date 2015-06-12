@@ -1,6 +1,5 @@
 /// <reference path="typings/node/node.d.ts"/>
 var hapi = require('hapi'),
-	controller = require('./alexa/controller'),
 	helper = require('./alexa/helper'),
 	Boom = require('boom'),
 	util = require('util'),
@@ -24,16 +23,18 @@ server.connection({ port: process.env.port || 8080 });
 var alexa = new alexaApp.App('CookBook', alexaConfig.applicationId);
 
 alexa.launch(function(request,reply) {
-  reply.say("Hello Kelly, you are my best friend!");
+  reply.say("I have opened your cook book. Which recipe would you like me to open?");
+  reply.shouldEndSession(false);
 });
 
-alexa.intent('number',function(request,reply) {
-  var number = request.slot('number');
-  reply.say("You asked for the number "+number);
+alexa.intent('Open',function(request,reply) {
+  var recipe = request.slot('Recipe');
+  reply.say("I will open up the recipe " + recipe + " for you.");
+  reply.shouldEndSession(true);
 });
 
 alexa.sessionEnded(function(request,reply) {
-
+	reply.say("Goodbye, enjoy your dinner.");
 });
 
 //register all routes
