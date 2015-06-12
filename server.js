@@ -38,7 +38,7 @@ alexa.intent('Open', function (request, reply) {
 			
 			//found the one show we wanted!
 			if(!Array.isArray(result)){
-				console.log(result);
+				helper.log(result);
 				imdb.getEpisodeCount(result.id)
 					.then(function(result){
 						console.log(result);
