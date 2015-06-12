@@ -75,9 +75,8 @@ server.route([
 						payload: request.payload
 					});
 					helper.log(util.inspect(result, {showHidden: false, depth: null})); 
+					reply(result);
 				}
-				
-				reply(result);
 			}
 		}
 	}
