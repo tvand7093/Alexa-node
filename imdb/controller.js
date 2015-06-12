@@ -28,7 +28,6 @@ function searchForShow(show, alexa) {
 			}
 		}
 		
-		console.log('NONE CACHED.');
 		var url = endpoints.search + encodeURIComponent(show);
 		request(url)
 			.then(function (result) {
@@ -37,13 +36,23 @@ function searchForShow(show, alexa) {
 
 					var array = result.Results.show;
 					alexa.body.sessionAttributes = {};
+					var found = null;
 					
 					for(var i = 0; i < array.length; i++){
-						var show = array[i];
-						alexa.session(show.showid, show.name[0].toLowerCase());
+						var currentShow = array[i];
+						var name = currentShow.name[0].toLowerCase();
+						if(name == show){
+							//this is the one we want.
+							alexa.session(currentShow.showid, name);
+							found = {
+								id: currentShow.showid,
+								name: name
+							};
+							break;
+						}
 					}
 
-					fulfill(array.length == 1 ? array[0] : array);
+					fulfill(found);
 				});
 			})
 			.catch(reject);

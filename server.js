@@ -36,14 +36,14 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 	if(showName != undefined && showName != null) 
 		showName = showName.toLowerCase();
 	else{
-		alexa.say('I could not understand you.', 'What did you say?');
+		alexa.say('I could not understand you.');
 	}
 		
 	return imdb.searchForShow(showName, alexa)
 		.then(function(result){
 			
 			//found the one show we wanted!
-			if(!Array.isArray(result)){
+			if(result != null){
 				helper.log(result);
 				imdb.getEpisodeCount(result.id)
 					.then(function(count){
@@ -54,30 +54,34 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 					})
 					.done(reply);
 			}
-			else{
-				alexa.shouldEndSession(false);
-				var names = "";
-				//multiple shows, have them pick.
-				for(var i = 0; i < result.length; i++){
-					if(i == 0){
-						//skip adding 
-						names += result[i].name;
-						continue;
-					}
-					
-					names += ", ";
-					
-					if(i == result.length - 1){
-						names += "or ";
-					}
-					
-					names += result[i].name;
-				}
-				
-				helper.log(names);
-				alexa.say("I found a few shows with that name, pick one of the following: " + names + '?');
+			else {
+				alexa.say("I could not find that show. What was it called again?");
 				reply(alexa.body);
 			}
+//			else{
+//				alexa.shouldEndSession(false);
+//				var names = "";
+//				//multiple shows, have them pick.
+//				for(var i = 0; i < result.length; i++){
+//					if(i == 0){
+//						//skip adding 
+//						names += result[i].name;
+//						continue;
+//					}
+//					
+//					names += ", ";
+//					
+//					if(i == result.length - 1){
+//						names += "or ";
+//					}
+//					
+//					names += result[i].name;
+//				}
+//				
+//				helper.log(names);
+//				alexa.say("I found a few shows with that name, pick one of the following: " + names + '?');
+//				reply(alexa.body);
+//			}
 		})
 		.catch(function(err){
 			alexa.say("I could not find that for you.");
