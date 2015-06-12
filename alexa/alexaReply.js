@@ -33,6 +33,11 @@ module.exports = function() {
 			subtitle: subtitle
 		};
 	};
+	
+	this.cache = function() {
+		return this.body.sessionAttributes;
+	}
+	
 	this.shouldEndSession = function(bool) {
 		this.body.response.shouldEndSession = bool;
 	};

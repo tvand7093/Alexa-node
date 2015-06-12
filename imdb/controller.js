@@ -7,17 +7,21 @@ var endpoints = {
 	list_episodes: 'http://services.tvrage.com/feeds/episode_list.php?sid='
 };
 
-var shows = [];
-
-function searchForShow(show) {
+function searchForShow(show, alexa) {
 	
 	return new Promise(function (fulfill, reject) {
+		var keys = Object.keys(alexa.cache);
+		console.log(alexa.cache);
 		//first check cache
-		for(var i = 0; i < shows.length; i++){
-			var cachedShow = shows[i];
-			if(cachedShow.name == show){
+		for(var i = 0; i < keys.length; i++){
+			//here key will be the id, and value will be the name
+			var cached = {
+				id: keys[i],
+				name: alexa.cache[keys[i]]
+			};
+			if(cached.name == show){
 				//we want this one!
-				fulfill(cachedShow);
+				fulfill(cached);
 				return;
 			}
 		}
@@ -29,19 +33,13 @@ function searchForShow(show) {
 					if (err) reject(err);
 
 					var array = result.Results.show;
-					shows = [];
 					
 					for(var i = 0; i < array.length; i++){
 						var show = array[i];
-
-						shows.push({
-							id: show.showid,
-							name: show.name[0]
-						});
+						alexa.session(show.showid, show.name[0]);
 					}
 
-					fulfill(shows.length == 1 ? shows[0] : shows);
-
+					fulfill(array.length == 1 ? array[0] : array);
 				});
 			})
 			.catch(reject);

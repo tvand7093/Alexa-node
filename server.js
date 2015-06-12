@@ -33,7 +33,7 @@ alexa.launch(function (req, alexa, request, reply) {
 alexa.intent('Open', function (req, alexa, request, reply) {
 	var showName = req.slot('ShowName');
 	console.log("Searching...");
-	return imdb.searchForShow(showName)
+	return imdb.searchForShow(showName, alexa)
 		.then(function(result){
 			console.log("Found shows.\n");
 			
@@ -41,9 +41,9 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 			if(!Array.isArray(result)){
 				helper.log(result);
 				imdb.getEpisodeCount(result.id)
-					.then(function(result){
-						console.log(result);
-						alexa.say("The show " + showName + " has around " + result + " episodes.");
+					.then(function(count){
+						console.log(count);
+						alexa.say("The show " + result.name + " has around " + count + " episodes.");
 						alexa.shouldEndSession(true);
 						return alexa.body;
 					})
