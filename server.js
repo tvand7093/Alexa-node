@@ -80,7 +80,7 @@ server.route([
 						route: "/alexa",
 						payload: request.payload
 					});
-					helper.log(util.inspect(result, { showHidden: false, depth: null }));
+					helper.log(result);
 					reply(result);
 				}
 			}

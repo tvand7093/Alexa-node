@@ -84,20 +84,22 @@ alexa.App = function(name, applicationId, endpoint) {
 			
 		} catch(e) {
 			console.log(e);
-			response.cancel("Sorry, the application encountered an error.");
+			response.say("Sorry, the application encountered an error.");
 		}
 		
-		response.promise.then(function () {
-			console.log("DONE");
-			console.log(response.body);
-			return response.body;
-		}).catch(function (err) {
-			console.log("ERROR DONE");
-			console.log(err);
-			response.say(err);
-			return response.body;
-		})
-		.done(reply);
+		reply(response.body);
+		
+//		response.promise.then(function () {
+//			console.log("DONE");
+//			console.log(response.body);
+//			return response.body;
+//		}).catch(function (err) {
+//			console.log("ERROR DONE");
+//			console.log(err);
+//			response.say(err);
+//			return response.body;
+//		})
+//		.done(reply);
 	};
 	this.test = function(req,res) {
 		res.render('test',{"json":self});
