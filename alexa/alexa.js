@@ -30,10 +30,10 @@ alexa.App = function(name, applicationId, endpoint) {
 	this.applicationId = applicationId;
 	
 	this.requestHandler = function(req,reply) {
+		var key;
+		var response = new AlexaReply();
+		
 		try {
-			var key;
-			
-			var response = new AlexaReply();
 			var request = new AlexaRequest(req.payload);
 
 			//validate that this is the correct application
@@ -81,9 +81,15 @@ alexa.App = function(name, applicationId, endpoint) {
 			
 		} catch(e) {
 			console.log(e);
-			response.say("Sorry, the application encountered an error");
+			response.cancel();
 		}
-		reply(response.body);
+		
+		response.done().then(function () {
+			reply( response.response );
+		}).catch(function () {
+			response.say("Sorry, the application encountered an error");
+			reply( response.response );
+		});
 	};
 	this.test = function(req,res) {
 		res.render('test',{"json":self});
