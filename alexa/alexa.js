@@ -56,7 +56,7 @@ alexa.App = function(name, applicationId, endpoint) {
 					var func = self.intents[req.payload.request.intent.name]['function'];
 					if (typeof func=="function") {
 						var intent = func(request,response,req,reply);
-						if(typeof intent.done == 'function') intent.done();
+						if(intent != undefined && typeof intent.done == 'function') intent.done();
 					}
 					else {
 						response.say("Sorry, the application didn't know what to do with that intent");
@@ -66,7 +66,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			else if ("LaunchRequest"===requestType) {
 				if (typeof self.launchFunc=="function") {
 					var launch = self.launchFunc(request,response,req,reply);
-					if(typeof launch.done == 'function') launch.done();
+					if(launch != undefined && typeof launch.done == 'function') launch.done();
 				}
 				else {
 					response.say("Try telling the application what to do instead of opening it");
@@ -75,7 +75,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			else if ("SessionEndedRequest"===requestType) {
 				if (typeof self.sessionEndedFunc=="function") {
 					var end = self.sessionEndedFunc(request,response,req,reply);
-					if(typeof end.done == 'function') end.done();
+					if(end != undefined && typeof end.done == 'function') end.done();
 				}
 			}
 			else {
@@ -84,13 +84,13 @@ alexa.App = function(name, applicationId, endpoint) {
 			
 		} catch(e) {
 			console.log(e);
-			response.cancel();
+			response.cancel("Sorry, the application encountered an error.");
 		}
 		
 		response.done().then(function () {
 			reply( response.response );
 		}).catch(function (err) {
-			response.say("Sorry, the application encountered an error.");
+			response.say(err);
 			reply( response.response );
 		});
 	};
