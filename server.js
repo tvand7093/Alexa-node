@@ -39,7 +39,7 @@ alexa.sessionEnded(function(request,reply) {
 
 //register all routes
 server.route([
-	{
+	{ 
 		method: 'POST',
 		path: '/alexa',
 		config: {
