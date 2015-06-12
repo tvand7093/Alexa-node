@@ -136,6 +136,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			}
 			
 		} catch(e) {
+			console.log(e);
 			response.say("Sorry, the application encountered an error");
 		}
 		reply(response.response);
