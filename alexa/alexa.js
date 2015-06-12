@@ -87,8 +87,8 @@ alexa.App = function(name,endpoint) {
 		try {
 			var key;
 			var response = new alexa.Response();
-			console.log(req.body);
-			var request = new alexa.Request(req.body);
+			console.log(req.payload);
+			var request = new alexa.Request(req.payload);
 			// Copy all the session attributes from the request into the response so they persist.
 			// This should happen by default, but it seems to be a bug in the Alexa API (?)
 			if (request.sessionAttributes) {
@@ -99,7 +99,7 @@ alexa.App = function(name,endpoint) {
 			var requestType = request.type();
 			if ("IntentRequest"===requestType) {
 				try {
-					var func = self.intents[req.body.request.intent.name]['function'];
+					var func = self.intents[req.payload.request.intent.name]['function'];
 					if (typeof func=="function") {
 						func(request,response,req,reply);
 					}
