@@ -36,7 +36,7 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 	if(showName != undefined && showName != null) 
 		showName = showName.toLowerCase();
 	else{
-		alexa.say('I could not understand you.');
+		alexa.reprompt('I could not understand you.');
 	}
 		
 	return imdb.searchForShow(showName, alexa)
@@ -55,7 +55,7 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 					.done(reply);
 			}
 			else {
-				alexa.say("I could not find that show. What was it called again?");
+				alexa.reprompt("I could not find that show. What was it called again?");
 				reply(alexa.body);
 			}
 //			else{

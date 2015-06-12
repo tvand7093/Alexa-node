@@ -34,9 +34,17 @@ module.exports = function() {
 		};
 	};
 	
-	this.cache = function() {
-		return this.body.sessionAttributes;
-	}
+	this.reprompt = function(str){
+		if (typeof this.body.reprompt.outputSpeech=="undefined") {
+			this.body.reprompt.outputSpeech = {
+				type:"PlainText",
+				text:str
+			};
+		}
+		else {
+			this.body.reprompt.outputSpeech.text+=str;
+		}
+	};
 	
 	this.shouldEndSession = function(bool) {
 		this.body.response.shouldEndSession = bool;
