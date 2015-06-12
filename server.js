@@ -34,9 +34,8 @@ alexa.intent('Open', function (request, reply) {
 	console.log("Searching...");
 	imdb.searchForShow(showName)
 		.then(function(result){
-			console.log(result);
 			//found the one show we wanted!
-			if(!result.length){
+			if(!Array.isArray(result)){
 				imdb.getEpisodeCount(result.id)
 					.then(function(result){
 						console.log(result);
@@ -48,9 +47,9 @@ alexa.intent('Open', function (request, reply) {
 				//multiple shows, have them pick.
 				var names = "";
 				for(var i = 0; i < result.length; i++){
-					names += " " + result[i];
+					names += " " + result[i].name;
 				}
-				
+				console.log(names);
 				reply.say("Which show should I check? " + names);
 			}
 		})
@@ -89,7 +88,5 @@ server.route([
 ]);
 
 server.start(function () {
-	imdb.searchForShow('the simpsons').then(console.log);
-		
 	console.log('Server running at:', server.info.uri);
 });
