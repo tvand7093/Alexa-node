@@ -91,7 +91,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			var response = new alexa.Response();
 
 			var request = new alexa.Request(req.payload);
-			
+			console.log(self.applicationId);
 			//validate that this is the correct application
 			if (request.payload.session.application.applicationId != self.applicationId) {
 				response.say("The application id specified is incorrect for this application.");
