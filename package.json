@@ -19,5 +19,8 @@
     "promise": "^7.0.1",
     "request-promise": "^0.4.2",
     "xml2js": "^0.4.9"
-  }
+  },
+  "engines": {
+    "node": ">=0.12"
+   }
 }
