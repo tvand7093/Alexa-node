@@ -67,7 +67,7 @@ function generateResponse(text, reprompt, endSession){
 
 module.exports = {
 	launch: function(data) {
-		return generateResponse("Hello world!", null, true);
+		return generateResponse("Hello world!", null, false);
 	},
 	intent: function(data) {
 		return generateResponse("Hello Tyler. I know you love kelly!", null, true);
