@@ -1,5 +1,5 @@
 
-module.exports.AlexaRequest = function(json) {
+module.exports = function(json) {
 	this.data = json;
 	this.slot = function(slot_name,default_value) {
 		try {

@@ -1,5 +1,5 @@
 
-module.exports.AlexaResponse = function() {
+module.exports = function() {
 	this.body = {
 		version: "1.0",
 		sessionAttributes:{},
