@@ -34,23 +34,23 @@ alexa.intent('Open', function (request, reply) {
 	console.log("Searching...");
 	imdb.searchForShow(showName)
 		.then(function(result){
+			console.log("Found shows.\n");
+			
 			//found the one show we wanted!
 			if(!Array.isArray(result)){
+				console.log(result);
 				imdb.getEpisodeCount(result.id)
 					.then(function(result){
 						console.log(result);
-						reply.say("The show " + showName + " has approximatly " + result + " episodes.");
+						reply.say("The show " + showName + " has around " + result + " episodes.");
 						reply.shouldEndSession(true);
 					});
 			}
 			else{
 				//multiple shows, have them pick.
-				var names = "";
-				for(var i = 0; i < result.length; i++){
-					names += " " + result[i].name;
-				}
+				var names = result.join(', ');
 				console.log(names);
-				reply.say("Which show should I check? " + names);
+				reply.say("I found a few shows with that name, pick one of the following: " + names + '?');
 			}
 		})
 		.catch(function(err){
