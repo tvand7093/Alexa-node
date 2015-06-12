@@ -24,7 +24,7 @@ server.connection({ port: process.env.port || 8080 });
 var alexa = new alexaApp.App('CookBook', alexaConfig.applicationId);
 
 alexa.launch(function (request, reply) {
-	reply.say("I have opened your cook book. Which recipe would you like me to open?");
+	reply.say("What would you like to know?");
 	reply.shouldEndSession(false);
 });
 
