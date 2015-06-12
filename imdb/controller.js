@@ -12,17 +12,17 @@ function searchForShow(show, alexa) {
 	
 	return new Promise(function (fulfill, reject) {
 		var keys = Object.keys(alexa.body.sessionAttributes);
-		helper.log(alexa.body.sessionAttributes);
 		//first check cache
 		for(var i = 0; i < keys.length; i++){
 			//here key will be the id, and value will be the name
 			var cached = {
 				id: keys[i],
-				name: alexa.body.sessionAttributes[keys[i]]
+				name: alexa.body.sessionAttributes[keys[i]].toLowerCase()
 			};
-			console.log(cached);
-			if(cached.name == show){
+			
+			if(cached.name == show.toLowerCase()){
 				//we want this one!
+				alexa.body.sessionAttributes = {};
 				fulfill(cached);
 				return;
 			}
@@ -36,10 +36,11 @@ function searchForShow(show, alexa) {
 					if (err) reject(err);
 
 					var array = result.Results.show;
+					alexa.body.sessionAttributes = {};
 					
 					for(var i = 0; i < array.length; i++){
 						var show = array[i];
-						alexa.session(show.showid, show.name[0]);
+						alexa.session(show.showid, show.name[0].toLowerCase());
 					}
 
 					fulfill(array.length == 1 ? array[0] : array);
