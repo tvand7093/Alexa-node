@@ -55,20 +55,20 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 				for(var i = 0; i < result.length; i++){
 					if(i == 0){
 						//skip adding 
-						names += result[i];
+						names += result[i].name;
 						continue;
 					}
 					
 					names += ", ";
 					
 					if(i == result.length - 1){
-						names += " and ";
+						names += "and ";
 					}
 					
-					names += result[i];
+					names += result[i].name;
 				}
 				
-				console.log(names);
+				helper.log(names);
 				alexa.say("I found a few shows with that name, pick one of the following: " + names + '?');
 				reply(alexa.body);
 			}
