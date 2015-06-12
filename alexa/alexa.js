@@ -87,6 +87,7 @@ alexa.App = function(name,endpoint) {
 		try {
 			var key;
 			var response = new alexa.Response();
+			console.log(req.body);
 			var request = new alexa.Request(req.body);
 			// Copy all the session attributes from the request into the response so they persist.
 			// This should happen by default, but it seems to be a bug in the Alexa API (?)
