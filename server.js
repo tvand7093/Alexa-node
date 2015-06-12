@@ -50,6 +50,7 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 					.done(reply);
 			}
 			else{
+				alexa.shouldEndSession(false);
 				var names = "";
 				//multiple shows, have them pick.
 				for(var i = 0; i < result.length; i++){
