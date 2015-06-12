@@ -7,17 +7,44 @@ var endpoints = {
 	list_episodes: 'http://services.tvrage.com/feeds/episode_list.php?sid='
 };
 
+var shows = [];
+
 function searchForShow(show) {
+	
 	return new Promise(function (fulfill, reject) {
+		//first check cache
+		for(var i = 0; i < shows.length; i++){
+			var cachedShow = shows[i];
+			if(cachedShow.name == show){
+				//we want this one!
+				fulfill(cachedShow);
+				return;
+			}
+		}
+		
 		var url = endpoints.search + encodeURIComponent(show);
 		request(url)
 			.then(function (result) {
 				parser(result, function (err, result) {
 					if (err) reject(err);
-					fulfill(result);
+
+					var array = result.Results.show;
+					shows = [];
+					
+					for(var i = 0; i < array.length; i++){
+						var show = array[i];
+
+						shows.push({
+							id: show.showid,
+							name: show.name[0]
+						});
+					}
+
+					fulfill(shows.length == 1 ? shows[0] : shows);
+
 				});
 			})
-			.catch(console.error);
+			.catch(reject);
 	});
 }
 

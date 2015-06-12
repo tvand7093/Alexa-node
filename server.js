@@ -33,8 +33,9 @@ alexa.intent('Open', function (request, reply) {
 
 	imdb.searchForShow(showName)
 		.then(function(result){
-			if(result.length == 1){
-				imdb.getEpisodeCount(result)
+			//found the one show we wanted!
+			if(!result.length){
+				imdb.getEpisodeCount(result.id)
 					.then(function(result){
 						reply.say("The show " + showName + " has approximatly " + result + " episodes.");
 						reply.shouldEndSession(true);
@@ -47,7 +48,7 @@ alexa.intent('Open', function (request, reply) {
 					names += " " + result[i];
 				}
 				
-				reply.say("What show should I check? " + names);
+				reply.say("Which show should I check? " + names);
 			}
 		})
 		.catch(function(err){
@@ -85,7 +86,7 @@ server.route([
 ]);
 
 server.start(function () {
-	var imdb = require('./imdb/controller');
-
+	imdb.searchForShow('the simpsons').then(console.log);
+		
 	console.log('Server running at:', server.info.uri);
 });
