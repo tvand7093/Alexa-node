@@ -32,10 +32,15 @@ alexa.launch(function (req, alexa, request, reply) {
 
 alexa.intent('Open', function (req, alexa, request, reply) {
 	var showName = req.slot('ShowName');
-	console.log("Searching...");
+	
+	if(showName != undefined && showName != null) 
+		showName = showName.toLowerCase();
+	else{
+		alexa.say('I could not understand you.', 'What did you say?');
+	}
+		
 	return imdb.searchForShow(showName, alexa)
 		.then(function(result){
-			console.log("Found shows.\n");
 			
 			//found the one show we wanted!
 			if(!Array.isArray(result)){
@@ -63,7 +68,7 @@ alexa.intent('Open', function (req, alexa, request, reply) {
 					names += ", ";
 					
 					if(i == result.length - 1){
-						names += "and ";
+						names += "or ";
 					}
 					
 					names += result[i].name;

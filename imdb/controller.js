@@ -1,5 +1,6 @@
 var request = require('request-promise'),
 	parser = require('xml2js').parseString,
+	helper = require('../alexa/helper'),
 	Promise = require('promise');
 
 var endpoints = {
@@ -10,15 +11,16 @@ var endpoints = {
 function searchForShow(show, alexa) {
 	
 	return new Promise(function (fulfill, reject) {
-		var keys = Object.keys(alexa.cache);
-		console.log(alexa.cache);
+		var keys = Object.keys(alexa.body.sessionAttributes);
+		helper.log(alexa.body.sessionAttributes);
 		//first check cache
 		for(var i = 0; i < keys.length; i++){
 			//here key will be the id, and value will be the name
 			var cached = {
 				id: keys[i],
-				name: alexa.cache[keys[i]]
+				name: alexa.body.sessionAttributes[keys[i]]
 			};
+			console.log(cached);
 			if(cached.name == show){
 				//we want this one!
 				fulfill(cached);
@@ -26,6 +28,7 @@ function searchForShow(show, alexa) {
 			}
 		}
 		
+		console.log('NONE CACHED.');
 		var url = endpoints.search + encodeURIComponent(show);
 		request(url)
 			.then(function (result) {
