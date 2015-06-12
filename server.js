@@ -23,7 +23,6 @@ server.connection({ port: process.env.port || 8080 });
 
 var alexa = new alexaApp.App('CookBook', alexaConfig.applicationId);
 
-
 alexa.launch(function(request,reply) {
   reply.say("Hello Kelly, you are my best friend!");
 });

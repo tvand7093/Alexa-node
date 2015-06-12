@@ -83,6 +83,8 @@ alexa.App = function(name, applicationId, endpoint) {
 	this.sessionEnded = function(func) {
 		this.sessionEndedFunc = func;
 	};
+	this.applicationId = applicationId;
+	
 	this.request = function(req,reply) {
 		try {
 			var key;
@@ -91,7 +93,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			var request = new alexa.Request(req.payload);
 			
 			//validate that this is the correct application
-			if (request.payload.session.application.applicationId != applicationId) {
+			if (request.payload.session.application.applicationId != self.applicationId) {
 				response.say("The application id specified is incorrect for this application.");
 				reply(response.response);
 				return;
