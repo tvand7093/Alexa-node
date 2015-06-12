@@ -21,7 +21,7 @@ var alexaResponses = {
 server.connection({ port: process.env.port || 8080 });
 
 
-var alexa = new alexaApp.App('CookBook', alexaConfig.applicationId);
+var alexa = new alexaApp.App('MyShows', alexaConfig.applicationId);
 
 alexa.launch(function (request, reply) {
 	reply.say("What would you like to know?");
@@ -32,7 +32,7 @@ alexa.launch(function (request, reply) {
 alexa.intent('Open', function (request, reply) {
 	var showName = request.slot('ShowName');
 	console.log("Searching...");
-	imdb.searchForShow(showName)
+	return imdb.searchForShow(showName)
 		.then(function(result){
 			console.log("Found shows.\n");
 			
@@ -60,7 +60,7 @@ alexa.intent('Open', function (request, reply) {
 });
 
 alexa.sessionEnded(function (request, reply) {
-	reply.say("Goodbye, enjoy your dinner.");
+
 });
 
 //register all routes
