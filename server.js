@@ -30,7 +30,7 @@ alexa.launch(function (request, reply) {
 
 alexa.intent('Open', function (request, reply) {
 	var showName = request.slot('ShowName');
-
+	console.log("Searching...");
 	imdb.searchForShow(showName)
 		.then(function(result){
 			//found the one show we wanted!
