@@ -1,63 +1,7 @@
-var alexa={};
+var AlexaReply = require('./alexaReply'),
+	AlexaRequest = require('./alexaRequest');
 
-alexa.Response = function() {
-	this.response = {
-		"version": "1.0",
-		"sessionAttributes":{},
-		"response": {
-			"shouldEndSession": true
-		}
-	};
-	this.say = function(str) {
-		if (typeof this.response.response.outputSpeech=="undefined") {
-			this.response.response.outputSpeech = {"type":"PlainText","text":str};
-		}
-		else {
-			this.response.response.outputSpeech.text+=str;
-		}
-	};
-	this.card = function(title,content,subtitle) {
-		this.response.response.card = {"type":"Simple","content":content,"title":title,"subtitle":subtitle};
-	};
-	this.shouldEndSession = function(bool) {
-		this.response.response.shouldEndSession = bool;
-	};
-	this.session = function(key,val) {
-		this.response.sessionAttributes[key] = val;
-	};
-};
-
-alexa.Request = function(json) {
-	this.data = json;
-	this.slot = function(slot_name,default_value) {
-		try {
-			return this.data.request.intent.slots[slot_name].value;
-		} catch(e) {}
-		return default_value;
-	};
-	this.type = function() {
-		try {
-			return this.data.request.type;
-		} catch(e) { }
-		return null;
-	};
-	this.sessionDetails = {
-		"new":this.data.session.new,
-		"sessionId":this.data.session.sessionId,
-		"userId":this.data.session.userId,
-		"attributes":this.data.session.attributes
-	};
-	this.userId = this.data.session.userId;
-	this.sessionId = this.data.session.sessionId;
-	this.sessionAttributes = this.data.session.attributes;
-	this.isSessionNew = (true===this.data.session.new);
-	this.session = function(key) {
-		try {
-			return this.data.session.attributes[key];
-		} catch(e) { }
-		return;
-	};
-};
+var alexa={ };
 
 alexa.apps = {};
 
@@ -85,17 +29,17 @@ alexa.App = function(name, applicationId, endpoint) {
 	};
 	this.applicationId = applicationId;
 	
-	this.request = function(req,reply) {
+	this.requestHandler = function(req,reply) {
 		try {
 			var key;
-			var response = new alexa.Response();
+			
+			var response = new AlexaReply();
+			var request = new AlexaRequest(req.payload);
 
-			var request = new alexa.Request(req.payload);
-			console.log(self.applicationId);
 			//validate that this is the correct application
 			if (request.payload.session.application.applicationId != self.applicationId) {
 				response.say("The application id specified is incorrect for this application.");
-				reply(response.response);
+				reply(response.body);
 				return;
 			}
 			
@@ -139,7 +83,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			console.log(e);
 			response.say("Sorry, the application encountered an error");
 		}
-		reply(response.response);
+		reply(response.body);
 	};
 	this.test = function(req,res) {
 		res.render('test',{"json":self});

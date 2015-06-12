@@ -45,7 +45,7 @@ server.route([
 			handler: function (request, reply) {
 				
 				try {
-					alexa.request(request, reply);
+					alexa.requestHandler(request, reply);
 				}
 				catch (e) {
 					var result = Boom.badRequest(e, {
