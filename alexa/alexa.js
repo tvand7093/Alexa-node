@@ -87,7 +87,7 @@ alexa.App = function(name, applicationId, endpoint) {
 			response.cancel("Sorry, the application encountered an error.");
 		}
 		
-		response.then(function () {
+		response.promise.then(function () {
 			console.log("DONE");
 			console.log(response.body);
 			return response.body;

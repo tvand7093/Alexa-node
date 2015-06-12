@@ -1,13 +1,8 @@
 module.exports = function() {
-	var isWaiting = false;
 	var resolve, reject;
 	var prom = new Promise(function (_resolve, _reject) {
 		resolve = _resolve;
 		reject = _reject;
-	});
-	
-	prom.then(function () {
-		isWaiting = false;
 	});
 			
 	this.body = {
@@ -42,18 +37,10 @@ module.exports = function() {
 	this.session = function(key,val) {
 		this.body.sessionAttributes[key] = val;
 	};
-	this.waitUntil = function () {
-		isWaiting = true;
-		return resolve;
-	}
-	this.isWaiting = function () {
-		return isWaiting;
-	};
 	this.cancel = function (reason) {
-		isWaiting = false;
 		reject(reason);
 	};
-	this.done = function () {
+	this.promise = function () {
 		return prom;
 	};
 };
