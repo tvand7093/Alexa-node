@@ -3,6 +3,7 @@ var alexa = require('./alexa-app');
 var app = new alexa.app('italian-parser');
 var express = require('express')();
 var bodyParser = require('body-parser');
+var https = require('https');
 
 express.use(bodyParser.json());
 
@@ -37,6 +38,5 @@ express.post('/',function(req,res) {
     });
 });
 
-var server = express.listen(process.env.PORT || 8833, function() { 
-	console.log("Listening on: " + server.address().address + server.address().port);
-});
+var server = https.createServer(express).listen(process.env.PORT || 8833);
+console.log("Listening on: " + server.address().address + server.address().port);
