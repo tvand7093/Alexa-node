@@ -32,7 +32,7 @@ app.launch(function(request,response) {
     response.say("Hello World");
 });
 
-app.express(express, "/echo");
+app.express(express, "/");
 
 var server = express.listen(process.env.PORT, function() {
 	console.log("Listening on: " + server.address().address + server.address().port);
