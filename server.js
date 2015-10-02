@@ -15,15 +15,15 @@ app.pre = function(request,response,type) {
 
 app.intent('Pick', function(request,response) {
 	console.log('intent Pick');
-    var data = request.slot('Shows', 'not found');
-    response.say("<p>Here is the English phrase: I <w role='ivona:VB'>like</w> watching <w role='ivona:NN'>Iron Man.</w></p>");
+    var movieName = request.slot('Shows', 'not found');
+    response.say("<p>Here is the English phrase: I <w role='ivona:VB'>like</w> watching <w role='ivona:NN'>" + movieName + ".</w></p>");
 		response.say("<p>Now, here is the Italian phrase: ");
 		//mi pjatʃe ɡwardando iron man.
 		var mi = "miː";
 		var piace = "piːjatʃe";
 		var guardando = "ɡwɑrdɑndoʊ";
 		var italian = "<phoneme alphabet='ipa' ph='" + mi + "'>I</phoneme> <phoneme alphabet='ipa' ph='" + piace + "'>like</phoneme>" +
-			"<phoneme alphabet='ipa' ph='" + guardando + "'>watching</phoneme> <w role='ivona:NN'>Iron Man</w>";
+			"<phoneme alphabet='ipa' ph='" + guardando + "'>watching</phoneme> <w role='ivona:NN'>" + movieName + ".</w>";
 		response.say(italian + "</p>");
   }
 );
