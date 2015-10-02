@@ -32,7 +32,19 @@ app.launch(function(request,response) {
     response.say("Hello World");
 });
 
-app.express(express, "/");
+express.post('/',function(req,res) {
+  app.request(req.body)        // connect express to alexa-app
+    .then(function(response) { // alexa-app returns a promise with the response
+      res.json(response);      // stream it to express' output
+    });
+});
+
+express.get('/',function(req,res) {
+  app.request(req.body)        // connect express to alexa-app
+    .then(function(response) { // alexa-app returns a promise with the response
+      res.json(response);      // stream it to express' output
+    });
+});
 
 var server = express.listen(process.env.PORT, function() {
 	console.log("Listening on: " + server.address().address + server.address().port);
