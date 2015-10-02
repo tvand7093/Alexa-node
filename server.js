@@ -1,9 +1,7 @@
-///<reference path="alexa/alexa-client.js" />
 
 var alexa = require('alexa-app');
 var app = new alexa.app('italian-parser');
 var express = require('express')();
-
 
 app.pre = function(request,response,type) {
     if (request.sessionDetails.application.applicationId!="amzn1.echo-sdk-ams.app.b52af693-bd89-4263-9f29-29f019d7d9a4") {
@@ -17,13 +15,8 @@ app.post = function(request,response,type,exception) {
     response.clear().say("An error occured: "+exception).send();
 };
 
-app.intent('Pick',
-  {
-    "slots":{"number":"NUMBER"}
-    ,"utterances":[ "say the number {1-100|number}" ]
-  },
-  function(request,response) {
-    var number = request.slot('Show');
+app.intent('Pick', function(request,response) {
+    var number = request.slot('Shows');
     response.say("You picked the show "+number);
   }
 );
