@@ -1,5 +1,5 @@
 
-var alexa = require('alexa-app');
+var alexa = require('./alexa-app');
 var app = new alexa.app('italian-parser');
 var express = require('express')();
 var bodyParser = require('body-parser');
@@ -12,11 +12,6 @@ app.pre = function(request,response,type) {
         response.fail("Invalid applicationId");
     }
 };
-
-// app.post = function(request,response,type,exception) {
-//     // Always turn an exception into a successful response
-//     response.clear().say("An error occured: "+exception).send();
-// };
 
 app.intent('Pick', function(request,response) {
 	console.log('intent Pick');
