@@ -21,6 +21,10 @@ app.intent('Pick', function(request,response) {
   }
 );
 
+app.error = function(exception, request, response) {
+    response.say("Sorry, something bad happened");
+};
+
 app.launch(function(request,response) {
     response.say("Hello World");
 });
