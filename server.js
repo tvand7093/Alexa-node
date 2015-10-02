@@ -19,7 +19,7 @@ app.intent('Pick', function(request,response) {
     response.say("<p>Here is the English phrase: I <w role='ivona:VB'>like</w> watching <w role='ivona:NN'>Iron Man</w>.</p>");
 		response.say("<p>Now, here is the Italian phrase: ");
 		//mi pjatʃe ɡwardando iron man.
-		var piace = "pja'tʃe";
+		var piace = "pjatʃe";
 		var italian = "<phoneme alphabet='ipa' ph='mi'>I</phoneme> <phoneme alphabet='ipa' ph='" + piace + "'>like</phoneme>" +
 			"<phoneme alphabet='ipa' ph='ɡwardando'>watching</phoneme> <w role='ivona:NN'>Iron Man</w>";
 		response.say(italian + "</p>");
