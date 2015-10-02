@@ -1,26 +1,15 @@
 {
-  "name": "Alexa-node",
+  "name": "alexa",
   "version": "1.0.0",
-  "description": "An Amazon Echo based web service",
+  "description": "",
   "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "ssh://git@github.com/tvand7093/Alexa-node.git"
-  },
   "scripts": {
-    "test": "jasmine-node spec --capture-exceptions"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Tyler Vanderhoef",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "boom": "^2.7.2",
-    "hapi": "^8.5.1",
-    "imdb-api": "^1.3.3",
-    "promise": "^7.0.1",
-    "request-promise": "^0.4.2",
-    "xml2js": "^0.4.9"
-  },
-  "engines": {
-    "node": ">=0.12"
-   }
+    "alexa-app": "^2.1.4",
+    "express": "^4.13.3"
+  }
 }

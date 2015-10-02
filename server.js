@@ -1,123 +1,39 @@
-/// <reference path="typings/node/node.d.ts"/>
-var hapi = require('hapi'),
-	helper = require('./alexa/helper'),
-	Boom = require('boom'),
-	util = require('util'),
-	server = new hapi.Server(),
-	imdb = require('./imdb/controller'),
-	alexaApp = require('./alexa/alexa');
+///<reference path="alexa/alexa-client.js" />
 
-var alexaConfig = {
-	applicationId: 'amzn1.echo-sdk-ams.app.ffa2f852-7629-49a6-8c89-c7295a1f4e7e'
+var alexa = require('alexa-app');
+var app = new alexa.app('italian-parser');
+var express = require('express')();
+
+
+app.pre = function(request,response,type) {
+    if (request.sessionDetails.application.applicationId!="amzn1.echo-sdk-ams.app.b52af693-bd89-4263-9f29-29f019d7d9a4") {
+        // Fail ungracefully
+        response.fail("Invalid applicationId");
+    }
 };
 
-var alexaResponses = {
-	launch: "LaunchRequest",
-	end: "SessionEndRequest",
-	intent: "IntentRequest"
+app.post = function(request,response,type,exception) {
+    // Always turn an exception into a successful response
+    response.clear().say("An error occured: "+exception).send();
 };
 
-//create the server connection on the configuration port.
-server.connection({ port: process.env.port || 8080 });
+app.intent('Pick',
+  {
+    "slots":{"number":"NUMBER"}
+    ,"utterances":[ "say the number {1-100|number}" ]
+  },
+  function(request,response) {
+    var number = request.slot('Show');
+    response.say("You picked the show "+number);
+  }
+);
 
-
-var alexa = new alexaApp.App('MyShows', alexaConfig.applicationId);
-
-alexa.launch(function (req, alexa, request, reply) {
-	alexa.say("What would you like to know?");
-	alexa.say("You may ask questions like: how many episodes are in a series?");
-	alexa.shouldEndSession(false);
-	reply(alexa.body);
+app.launch(function(request,response) {
+    response.say("Hello World");
 });
 
-alexa.intent('Open', function (req, alexa, request, reply) {
-	var showName = req.slot('ShowName');
-	
-	if(showName != undefined && showName != null) 
-		showName = showName.toLowerCase();
-	else{
-		alexa.reprompt('I could not understand you.');
-	}
-		
-	return imdb.searchForShow(showName, alexa)
-		.then(function(result){
-			
-			//found the one show we wanted!
-			if(result != null){
-				helper.log(result);
-				imdb.getEpisodeCount(result.id)
-					.then(function(count){
-						console.log(count);
-						alexa.say("The show " + result.name + " has around " + count + " episodes.");
-						alexa.shouldEndSession(true);
-						return alexa.body;
-					})
-					.done(reply);
-			}
-			else {
-				alexa.reprompt("I could not find that show. What was it called again?");
-				reply(alexa.body);
-			}
-//			else{
-//				alexa.shouldEndSession(false);
-//				var names = "";
-//				//multiple shows, have them pick.
-//				for(var i = 0; i < result.length; i++){
-//					if(i == 0){
-//						//skip adding 
-//						names += result[i].name;
-//						continue;
-//					}
-//					
-//					names += ", ";
-//					
-//					if(i == result.length - 1){
-//						names += "or ";
-//					}
-//					
-//					names += result[i].name;
-//				}
-//				
-//				helper.log(names);
-//				alexa.say("I found a few shows with that name, pick one of the following: " + names + '?');
-//				reply(alexa.body);
-//			}
-		})
-		.catch(function(err){
-			alexa.say("I could not find that for you.");
-			alexa.shouldEndSession(true);
-			reply(alexa.body);
-		});
-});
+app.express(express, "/echo/", false );
 
-alexa.sessionEnded(function (req, alexa, request, reply) {
-	reply(alexa.body);
-});
-
-//register all routes
-server.route([
-	{
-		method: 'POST',
-		path: '/alexa',
-		config: {
-			handler: function (request, reply) {
-
-				try {
-					alexa.requestHandler(request, reply);
-				}
-				catch (e) {
-					var result = Boom.badRequest(e, {
-						route: "/alexa",
-						payload: request.payload
-					});
-					helper.log(result);
-					reply(result);
-				}
-			}
-		}
-	}
-]);
-
-server.start(function () {
-	console.log('Server running at:', server.info.uri);
+var server = express.listen(process.env.PORT, function() {
+	console.log("Listening on: " + server.address().address + server.address().port);
 });
