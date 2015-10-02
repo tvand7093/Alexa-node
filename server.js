@@ -16,16 +16,19 @@ app.post = function(request,response,type,exception) {
 };
 
 app.intent('Pick', function(request,response) {
+	console.log('intent Pick');
     var number = request.slot('Shows');
     response.say("You picked the show "+number);
   }
 );
 
 app.error = function(exception, request, response) {
+	console.log('error');
     response.say("Sorry, something bad happened");
 };
 
 app.launch(function(request,response) {
+	console.log('launch');
     response.say("Hello World");
 });
 
