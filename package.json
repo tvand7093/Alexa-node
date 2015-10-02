@@ -11,8 +11,5 @@
   "dependencies": {
     "alexa-app": "^2.1.4",
     "express": "^4.13.3"
-  },
-	"engines" : { 
-		"node" : "4.1.0" 
-	}
+  }
 }
