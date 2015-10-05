@@ -1,7 +1,7 @@
 ///<references path='_references.js' />
 
 var alexa = require('./alexa-app');
-var app = new alexa.app('italian-parser');
+var app = new alexa.app('game-guide');
 var express = require('express')();
 var bodyParser = require('body-parser');
 var promise = require('promise');
