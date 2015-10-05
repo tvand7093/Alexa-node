@@ -27,7 +27,7 @@ app.intent('Team', function(request,response) {
 		schedule.findChannel(teamName)
 			.then(function(channel){
 				
-				if(channel.channel == 0){
+				if(channel.channel == -1){
 					//game over, wait till next week.
 					response.say("This weeks game has already been played. Please ask again in a few days.").send();
 					return;
