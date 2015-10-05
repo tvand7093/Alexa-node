@@ -41,7 +41,7 @@ app.intent('Team', function(request,response) {
 					response.say(channel.name);
 				}
 				
-				if(channel.channel != -1){
+				if(channel.channel != 0){
 					response.say(" channel " + channel.channel);
 				}
 				
@@ -77,7 +77,7 @@ express.get('/testNFL', function(req, res){
 	
 	var error = function(err) { debugger; };
 	
-	schedule.findChannel('New Oreleans Saints')
+	schedule.findChannel('packers')
 		//must use full function here, because express doesn't like piping from a promise.
 		.then(function(channel){
 			res.json(channel);

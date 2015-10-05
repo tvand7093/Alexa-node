@@ -10,7 +10,7 @@ function scheduler() {
 	this.channels = [
 		{ name: 'fox', channel: 12, spellOut: false },
 		{ name: 'cbs', channel: 6, spellOut: true },
-		{ name: 'espn', channel: -1, spellOut: true },
+		{ name: 'espn', channel: 0, spellOut: true },
 		{ name: 'nbc', channel: 8, spellOut: true }
 	];
 	
@@ -59,23 +59,24 @@ function scheduler() {
 		///<summary>Extracts the channel number based off of the channels title.</summary>
 		///<param name='channelName' type='String'>The channel name to use for the parsing.</param>
 		///<returns type='Object'>The local channel number that matches the specified channe.</returns>
+		var toReturn = { name: 'Not Available', channel: -1, spellOut: false };		
+		
 		if(channelName == undefined){
 			//game must have passed, so just return nothing.
-			return 0;
+			return toReturn;
 		}
 		
 		channelName = channelName.toLowerCase();
-		var channelNumber = 0;
 		
 		for(var i = 0; i < this.channels.length; i++){
 			var channelInfo = this.channels[i];
 			if(channelInfo.name == channelName){
-				channelNumber = channelInfo;
+				toReturn = channelInfo;
 				break;
 			}
 		}
 	
-		return channelNumber;
+		return toReturn;
 	};
 	
 	this.findChannel = function(teamName) {
