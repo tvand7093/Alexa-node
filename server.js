@@ -1,8 +1,11 @@
+///<references path='_references.js' />
 
 var alexa = require('./alexa-app');
 var app = new alexa.app('italian-parser');
 var express = require('express')();
 var bodyParser = require('body-parser');
+var promise = require('promise');
+var NFL = require('./nfl/schedule');
 
 express.use(bodyParser.json());
 
@@ -13,20 +16,31 @@ app.pre = function(request,response,type) {
     }
 };
 
-app.intent('Pick', function(request,response) {
-	console.log('intent Pick');
-    var movieName = request.slot('Shows', 'not found');
-    response.say("<p>Here is the English phrase: I <w role='ivona:VB'>like</w> watching <w role='ivona:NN'>" + movieName + ".</w></p>");
-		response.say("<p>Now, here is the Italian phrase: ");
-		//mi pjatʃe ɡwardando iron man.
-		var mi = "miː";
-		var piace = "piːjatʃe";
-		var guardando = "ɡwɑrdɑndoʊ";
-		var italian = "<phoneme alphabet='ipa' ph='" + mi + "'>I</phoneme> <phoneme alphabet='ipa' ph='" + piace + "'>like</phoneme>" +
-			"<phoneme alphabet='ipa' ph='" + guardando + "'>watching</phoneme> <w role='ivona:NN'>" + movieName + ".</w>";
-		response.say(italian + "</p>");
-  }
-);
+app.intent('Teams', function(request,response) {
+	var schedule = new NFL();
+
+  var teamName = request.slot('Channel', 'not found');
+	if(teamName != 'not found'){
+		var error = function(err){
+			response.say("I could not find a game channel for the " + teamName);
+		};
+		schedule.findChannel(teamName)
+			.then(function(channel){
+				response.say("The " + teamName + " will be playing on ");
+				if(channel.spellOut){
+					response.say("<say-as interpret-as='spell-out'>" + channel.name + "</say-as>");
+				}
+				else{
+					response.say(channel.name);
+				}
+				response.say(" channel " + channel.channel + ".").send();
+			}, error);
+			return false;
+	}
+	else{
+		response.reprompt('I did not understand your request. What team would you like to find the game channel for?');
+	}
+});
 
 app.error = function(exception, request, response) {
 	console.log('error');
@@ -43,6 +57,20 @@ express.post('/',function(req,res) {
     .then(function(response) { // alexa-app returns a promise with the response
       res.json(response);      // stream it to express' output
     });
+});
+
+express.get('/testNFL', function(req, res){
+	var NFL = require('./nfl/schedule');
+	var schedule = new NFL();
+	
+	var error = function(err) { debugger; };
+	
+	schedule.findChannel('New Oreleans Saints')
+		//must use full function here, because express doesn't like piping from a promise.
+		.then(function(channel){
+			res.json(channel);
+		}, error)
+		.catch(error);
 });
 
 var server = express.listen(process.env.PORT || 8833, function() {
