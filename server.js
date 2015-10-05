@@ -35,7 +35,7 @@ app.intent('Team', function(request,response) {
 				
 				response.say("The " + teamName + " will be playing on ");
 				if(channel.spellOut){
-					response.say("<say-as interpret-as='spell-out'>" + channel.name + "</say-as>");
+					response.say("<say-as interpret-as='spell-out'>" + channel.name + "</say-as>,");
 				}
 				else{
 					response.say(channel.name);
