@@ -16,10 +16,10 @@ app.pre = function(request,response,type) {
     }
 };
 
-app.intent('Teams', function(request,response) {
+app.intent('Team', function(request,response) {
 	var schedule = new NFL();
 
-  var teamName = request.slot('Channel', 'not found');
+  var teamName = request.slot('Teams', 'not found');
 	if(teamName != 'not found'){
 		var error = function(err){
 			response.say("I could not find a game channel for the " + teamName);
