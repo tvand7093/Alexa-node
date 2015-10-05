@@ -42,10 +42,10 @@ app.intent('Team', function(request,response) {
 				}
 				
 				if(channel.channel != -1){
-					response.say(" channel " + channel.channel + " this week.");
+					response.say(" channel " + channel.channel);
 				}
 				
-				response.send();
+				response.say(" this week.").send();
 			}, error);
 			return false;
 	}
