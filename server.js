@@ -22,10 +22,17 @@ app.intent('Team', function(request,response) {
   var teamName = request.slot('Teams', 'not found');
 	if(teamName != 'not found'){
 		var error = function(err){
-			response.say("I could not find a game channel for the " + teamName);
+			response.say("I could not find a game channel for the " + teamName).send();
 		};
 		schedule.findChannel(teamName)
 			.then(function(channel){
+				
+				if(channel.channel == 0){
+					//game over, wait till next week.
+					response.say("This weeks game has already been played. Please ask again in a few days.").send();
+					return;
+				}
+				
 				response.say("The " + teamName + " will be playing on ");
 				if(channel.spellOut){
 					response.say("<say-as interpret-as='spell-out'>" + channel.name + "</say-as>");
@@ -33,7 +40,12 @@ app.intent('Team', function(request,response) {
 				else{
 					response.say(channel.name);
 				}
-				response.say(" channel " + channel.channel + ".").send();
+				
+				if(channel.channel != -1){
+					response.say(" channel " + channel.channel + ".");
+				}
+				
+				response.send();
 			}, error);
 			return false;
 	}
