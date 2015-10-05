@@ -42,8 +42,8 @@ function scheduler() {
 			var game = games[i];
 			var teams = $(game).find('span.team-name');
 			
-			var home = teams[0].children[0].data;
-			var away = teams[1].children[0].data;
+			var home = teams[0].children[0].data.toLowerCase();
+			var away = teams[1].children[0].data.toLowerCase();
 			
 			if(teamName.endsWith(home) || teamName.endsWith(away)){
 				//this is our game, so extract the name of the channel

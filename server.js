@@ -77,7 +77,7 @@ express.get('/testNFL', function(req, res){
 	
 	var error = function(err) { debugger; };
 	
-	schedule.findChannel('packers')
+	schedule.findChannel('saints')
 		//must use full function here, because express doesn't like piping from a promise.
 		.then(function(channel){
 			res.json(channel);
