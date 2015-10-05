@@ -22,7 +22,7 @@ app.intent('Team', function(request,response) {
   var teamName = request.slot('Teams', 'not found');
 	if(teamName != 'not found'){
 		var error = function(err){
-			response.say("I could not find a game channel for the " + teamName).send();
+			response.say("I could not find a game channel for this weeks " + teamName + " game.").send();
 		};
 		schedule.findChannel(teamName)
 			.then(function(channel){
@@ -42,7 +42,7 @@ app.intent('Team', function(request,response) {
 				}
 				
 				if(channel.channel != -1){
-					response.say(" channel " + channel.channel + ".");
+					response.say(" channel " + channel.channel + " this week.");
 				}
 				
 				response.send();
